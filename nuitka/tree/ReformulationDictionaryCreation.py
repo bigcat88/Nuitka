@@ -44,8 +44,8 @@ from nuitka.nodes.ExceptionNodes import (
 )
 from nuitka.nodes.FunctionNodes import (
     ExpressionFunctionCall,
-    ExpressionFunctionCreation,
     ExpressionFunctionRef,
+    makeExpressionFunctionCreation,
 )
 from nuitka.nodes.KeyValuePairNodes import (
     makeExpressionKeyValuePair,
@@ -286,7 +286,7 @@ def buildDictionaryUnpacking(provider, node, source_ref):
     )
 
     result = ExpressionFunctionCall(
-        function=ExpressionFunctionCreation(
+        function=makeExpressionFunctionCreation(
             function_ref=ExpressionFunctionRef(
                 function_body=getDictUnpackingHelper(), source_ref=source_ref
             ),

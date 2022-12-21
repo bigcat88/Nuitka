@@ -60,8 +60,8 @@ from nuitka.nodes.DictionaryNodes import (
 from nuitka.nodes.FunctionAttributeNodes import ExpressionFunctionQualnameRef
 from nuitka.nodes.FunctionNodes import (
     ExpressionFunctionCall,
-    ExpressionFunctionCreation,
     ExpressionFunctionRef,
+    makeExpressionFunctionCreation,
 )
 from nuitka.nodes.GlobalsLocalsNodes import ExpressionBuiltinLocalsRef
 from nuitka.nodes.LocalsDictNodes import (
@@ -388,7 +388,7 @@ def buildClassNode3(provider, node, source_ref):
 
         if python_version >= 0x370:
             bases_conversion = ExpressionFunctionCall(
-                function=ExpressionFunctionCreation(
+                function=makeExpressionFunctionCreation(
                     function_ref=ExpressionFunctionRef(
                         function_body=getClassBasesMroConversionHelper(),
                         source_ref=source_ref,

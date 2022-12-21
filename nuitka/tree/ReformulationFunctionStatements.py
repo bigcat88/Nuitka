@@ -39,8 +39,8 @@ from nuitka.nodes.CoroutineNodes import (
 )
 from nuitka.nodes.FunctionNodes import (
     ExpressionFunctionBody,
-    ExpressionFunctionCreation,
     ExpressionFunctionRef,
+    makeExpressionFunctionCreation,
 )
 from nuitka.nodes.GeneratorNodes import (
     ExpressionGeneratorObjectBody,
@@ -237,7 +237,7 @@ def buildFunctionNode(provider, node, source_ref):
 
     annotations = buildParameterAnnotations(provider, node, source_ref)
 
-    function_creation = ExpressionFunctionCreation(
+    function_creation = makeExpressionFunctionCreation(
         function_ref=ExpressionFunctionRef(
             function_body=function_body, source_ref=source_ref
         ),
@@ -401,7 +401,7 @@ def buildAsyncFunctionNode(provider, node, source_ref):
         ),
     )
 
-    function_creation = ExpressionFunctionCreation(
+    function_creation = makeExpressionFunctionCreation(
         function_ref=ExpressionFunctionRef(
             function_body=creator_function_body, source_ref=source_ref
         ),

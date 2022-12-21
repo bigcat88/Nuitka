@@ -30,8 +30,8 @@ from nuitka.nodes.FrameNodes import (
     StatementsFrameGenerator,
 )
 from nuitka.nodes.FunctionNodes import (
-    ExpressionFunctionCreation,
     ExpressionFunctionRef,
+    makeExpressionFunctionCreation,
 )
 from nuitka.nodes.GeneratorNodes import (
     ExpressionGeneratorObjectBody,
@@ -175,7 +175,7 @@ def buildLambdaNode(provider, node, source_ref):
 
     annotations = buildParameterAnnotations(provider, node, source_ref)
 
-    return ExpressionFunctionCreation(
+    return makeExpressionFunctionCreation(
         function_ref=ExpressionFunctionRef(
             function_body=outer_body, source_ref=source_ref
         ),

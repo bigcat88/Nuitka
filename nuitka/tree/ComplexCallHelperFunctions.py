@@ -54,8 +54,8 @@ from nuitka.nodes.ExceptionNodes import (
 from nuitka.nodes.FunctionAttributeNodes import ExpressionFunctionErrorStr
 from nuitka.nodes.FunctionNodes import (
     ExpressionFunctionCall,
-    ExpressionFunctionCreation,
     ExpressionFunctionRef,
+    makeExpressionFunctionCreation,
 )
 from nuitka.nodes.LoopNodes import StatementLoop, StatementLoopBreak
 from nuitka.nodes.OperatorNodes import makeBinaryOperationNode
@@ -333,7 +333,7 @@ def makeStarListArgumentErrorRaise(called_variable, star_list_variable):
                     right=makeExpressionMakeTuple(
                         elements=(
                             ExpressionFunctionCall(
-                                function=ExpressionFunctionCreation(
+                                function=makeExpressionFunctionCreation(
                                     function_ref=ExpressionFunctionRef(
                                         function_body=getCallableNameDescBody(),
                                         source_ref=internal_source_ref,
@@ -464,7 +464,7 @@ def _makeRaiseExceptionMustBeMapping(called_variable, star_dict_variable):
                     right=makeExpressionMakeTuple(
                         elements=(
                             ExpressionFunctionCall(
-                                function=ExpressionFunctionCreation(
+                                function=makeExpressionFunctionCreation(
                                     function_ref=ExpressionFunctionRef(
                                         function_body=getCallableNameDescBody(),
                                         source_ref=internal_source_ref,
@@ -680,7 +680,7 @@ def _makeRaiseNoStringItem(called_variable):
                 user_provided=True,
             ),
             right=ExpressionFunctionCall(
-                function=ExpressionFunctionCreation(
+                function=makeExpressionFunctionCreation(
                     function_ref=ExpressionFunctionRef(
                         function_body=getCallableNameDescBody(),
                         source_ref=internal_source_ref,
@@ -735,7 +735,7 @@ def _makeRaiseDuplicationItem(called_variable, tmp_key_variable):
                     right=makeExpressionMakeTuple(
                         elements=(
                             ExpressionFunctionCall(
-                                function=ExpressionFunctionCreation(
+                                function=makeExpressionFunctionCreation(
                                     function_ref=ExpressionFunctionRef(
                                         function_body=getCallableNameDescBody(),
                                         source_ref=internal_source_ref,

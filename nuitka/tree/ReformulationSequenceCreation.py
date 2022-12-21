@@ -45,8 +45,8 @@ from nuitka.nodes.ContainerOperationNodes import (
 )
 from nuitka.nodes.FunctionNodes import (
     ExpressionFunctionCall,
-    ExpressionFunctionCreation,
     ExpressionFunctionRef,
+    makeExpressionFunctionCreation,
 )
 from nuitka.nodes.LoopNodes import StatementLoop, StatementLoopBreak
 from nuitka.nodes.ReturnNodes import StatementReturn
@@ -378,7 +378,7 @@ def buildListUnpacking(provider, elements, source_ref):
             )
 
     result = ExpressionFunctionCall(
-        function=ExpressionFunctionCreation(
+        function=makeExpressionFunctionCreation(
             function_ref=ExpressionFunctionRef(
                 function_body=getListUnpackingHelper(), source_ref=source_ref
             ),
@@ -423,7 +423,7 @@ def _buildSetUnpacking(provider, elements, source_ref):
             )
 
     result = ExpressionFunctionCall(
-        function=ExpressionFunctionCreation(
+        function=makeExpressionFunctionCreation(
             function_ref=ExpressionFunctionRef(
                 function_body=getSetUnpackingHelper(), source_ref=source_ref
             ),

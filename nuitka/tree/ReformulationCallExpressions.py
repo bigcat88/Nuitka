@@ -31,8 +31,8 @@ from nuitka.nodes.ContainerMakingNodes import (
 from nuitka.nodes.DictionaryNodes import makeExpressionMakeDictOrConstant
 from nuitka.nodes.FunctionNodes import (
     ExpressionFunctionCall,
-    ExpressionFunctionCreation,
     ExpressionFunctionRef,
+    makeExpressionFunctionCreation,
 )
 from nuitka.nodes.KeyValuePairNodes import makeExpressionPairs
 from nuitka.nodes.OutlineNodes import ExpressionOutlineBody
@@ -124,7 +124,7 @@ def buildCallNode(provider, node, source_ref):
             ]
 
             dict_star_arg = ExpressionFunctionCall(
-                function=ExpressionFunctionCreation(
+                function=makeExpressionFunctionCreation(
                     function_ref=ExpressionFunctionRef(
                         function_body=getFunctionCallHelperDictionaryUnpacking(),
                         source_ref=source_ref,
@@ -291,7 +291,7 @@ def _makeCallNode(
             helper_args.append(dict_star_arg)
 
         result = ExpressionFunctionCall(
-            function=ExpressionFunctionCreation(
+            function=makeExpressionFunctionCreation(
                 function_ref=ExpressionFunctionRef(
                     function_body=get_helper(), source_ref=source_ref
                 ),

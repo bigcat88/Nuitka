@@ -856,18 +856,26 @@ class ExpressionFunctionPureInlineConstBody(ExpressionFunctionBody):
         return 0
 
 
-def _convertNoneConstantOrEmptyDictToNone(node):
-    if node is None:
-        return None
-    elif node.isExpressionConstantNoneRef():
-        return None
-    elif node.isExpressionConstantDictEmptyRef():
-        return None
-    else:
-        return node
-
-
 # TODO: Function direct call node ought to be here too.
+
+
+def makeExpressionFunctionCreation(
+    function_ref, defaults, kw_defaults, annotations, source_ref
+):
+    if kw_defaults is not None and kw_defaults.isExpressionConstantDictEmptyRef():
+        kw_defaults = None
+
+    assert kw_defaults is None or kw_defaults.isExpression()
+    assert annotations is None or annotations.isExpression()
+    assert function_ref.isExpressionFunctionRef()
+
+    return ExpressionFunctionCreation(
+        function_ref=function_ref,
+        defaults=defaults,
+        kw_defaults=kw_defaults,
+        annotations=annotations,
+        source_ref=source_ref,
+    )
 
 
 class ExpressionFunctionCreation(
@@ -889,12 +897,9 @@ class ExpressionFunctionCreation(
     else:
         named_children = ("defaults", "kw_defaults", "annotations", "function_ref")
 
-    checkers = {"kw_defaults": _convertNoneConstantOrEmptyDictToNone}
+    checkers = {}
 
     def __init__(self, function_ref, defaults, kw_defaults, annotations, source_ref):
-        assert kw_defaults is None or kw_defaults.isExpression()
-        assert annotations is None or annotations.isExpression()
-        assert function_ref.isExpressionFunctionRef()
 
         ExpressionChildrenHavingBase.__init__(
             self,
@@ -1068,7 +1073,7 @@ class ExpressionFunctionRef(ExpressionNoSideEffectsMixin, ExpressionBase):
         assert function_body is not None or code_name is not None
         assert code_name != "None"
 
-        ExpressionBase.__init__(self, source_ref=source_ref)
+        ExpressionBase.__init__(self, source_ref)
 
         self.function_body = function_body
         self.code_name = code_name
