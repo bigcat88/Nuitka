@@ -33,3 +33,10 @@ def checkStatementsSequence(value):
     assert value is not None and value.kind == "STATEMENTS_SEQUENCE", value
 
     return value
+
+
+def convertNoneConstantToNone(node):
+    if node is None or node.isExpressionConstantNoneRef():
+        return None
+    else:
+        return node

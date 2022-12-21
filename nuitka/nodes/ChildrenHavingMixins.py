@@ -28,15 +28,10 @@ spell-checker: ignore args chars count default encoding end errors fillchar iter
 
 
 # Loop unrolling over child names, pylint: disable=too-many-branches
+from nuitka.node.Checkers import convertNoneConstantToNone
+
 from .NodeBases import NodeBase
 from .NodeMakingHelpers import wrapExpressionWithSideEffects
-
-
-def convertNoneConstantToNone(node):
-    if node is None or node.isExpressionConstantNoneRef():
-        return None
-    else:
-        return node
 
 
 class ChildrenHavingArgsTupleMixin(object):
@@ -575,7 +570,7 @@ class ChildrenHavingElementsTupleMixin(object):
         return self.computeExpression(trace_collection)
 
 
-class ChildrenHavingExpressionLowerUpperMixin(object):
+class ChildrenHavingExpressionLowerAutoNoneUpperAutoNoneMixin(object):
     # Mixins are not allow to specify slots, pylint: disable=assigning-non-slot
     __slots__ = ()
 

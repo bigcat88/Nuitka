@@ -321,15 +321,23 @@ def getCallModulePrefix(module_name, function_name):
     return ""
 
 
-def makeMixinName(named_children, named_children_types):
+def makeMixinName(named_children, named_children_types, named_children_checkers):
     def _addType(name):
         if name in named_children_types:
-            return name + "_" + named_children_types[name].title()
+            return "_" + named_children_types[name]
         else:
-            return name
+            return ""
+
+    def _addChecker(name):
+        if name in named_children_checkers:
+            if named_children_checkers[name] == "convertNoneConstantToNone":
+                return "_auto_none"
+        else:
+            return ""
 
     mixin_name = "".join(
-        makeTitleCased(_addType(named_child)) for named_child in named_children
+        makeTitleCased(named_child + _addType(named_child) + _addChecker(named_child))
+        for named_child in named_children
     )
 
     return mixin_name
@@ -381,21 +389,15 @@ def makeChildrenHavingMixinNodes():
 
         emit("""# Loop unrolling over child names, pylint: disable=too-many-branches""")
 
-        emit(
-            """
-def convertNoneConstantToNone(node):
-    if node is None or node.isExpressionConstantNoneRef():
-        return None
-    else:
-        return node
-"""
-        )
+        emit("""from nuitka.node.Checkers import convertNoneConstantToNone""")
 
         for named_children, named_children_types, named_children_checkers in sorted(
             children_mixins
         ):
             assert named_children
-            mixin_name = makeMixinName(named_children, named_children_types)
+            mixin_name = makeMixinName(
+                named_children, named_children_types, named_children_checkers
+            )
 
             if mixin_name in mixins_done:
                 continue
@@ -449,7 +451,9 @@ hard_import_node_classes = {}
             code = template.render(
                 name=template.name,
                 mixin_name=makeMixinName(
-                    spec.getParameterNames(), named_children_types
+                    spec.getParameterNames(),
+                    named_children_types,
+                    named_children_checkers,
                 ),
                 parameter_names_count=len(spec.getParameterNames()),
                 parameter_names=spec.getParameterNames(),

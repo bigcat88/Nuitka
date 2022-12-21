@@ -26,8 +26,12 @@ There will be a method "computeExpressionSlice" to aid predicting them.
 from nuitka.PythonVersions import python_version
 from nuitka.specs import BuiltinParameterSpecs
 
+from .ChildrenHavingMixins import (
+    ChildrenHavingExpressionLowerAutoNoneUpperAutoNoneMixin,
+)
 from .ConstantRefNodes import ExpressionConstantNoneRef, makeConstantRefNode
 from .ExpressionBases import (
+    ExpressionBase,
     ExpressionChildHavingBase,
     ExpressionChildrenHavingBase,
     ExpressionSpecBasedComputationNoRaiseMixin,
@@ -38,7 +42,6 @@ from .NodeBases import (
     StatementChildrenHavingBase,
 )
 from .NodeMakingHelpers import (
-    convertNoneConstantToNone,
     makeStatementExpressionOnlyReplacementNode,
     makeStatementOnlyNodesFromExpressions,
     wrapExpressionWithSideEffects,
@@ -195,21 +198,24 @@ Slice del raises exception in upper slice boundary value, removed del""",
         )
 
 
-class ExpressionSliceLookup(ExpressionChildrenHavingBase):
+class ExpressionSliceLookup(
+    ChildrenHavingExpressionLowerAutoNoneUpperAutoNoneMixin, ExpressionBase
+):
     kind = "EXPRESSION_SLICE_LOOKUP"
 
     named_children = ("expression", "lower", "upper")
 
-    checkers = {"upper": convertNoneConstantToNone, "lower": convertNoneConstantToNone}
-
     def __init__(self, expression, lower, upper, source_ref):
         assert python_version < 0x300
 
-        ExpressionChildrenHavingBase.__init__(
+        ChildrenHavingExpressionLowerAutoNoneUpperAutoNoneMixin.__init__(
             self,
-            values={"expression": expression, "upper": upper, "lower": lower},
-            source_ref=source_ref,
+            expression=expression,
+            lower=lower,
+            upper=upper,
         )
+
+        ExpressionBase.__init__(self, source_ref)
 
     def computeExpression(self, trace_collection):
         lookup_source = self.subnode_expression

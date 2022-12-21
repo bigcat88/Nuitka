@@ -180,9 +180,9 @@ def buildAssignmentStatementsFromDecoded(provider, kind, detail, source, source_
         # For Python3 there is no slicing operation, this is always done
         # with subscript using a slice object. For Python2, it is only done
         # if no "step" is provided.
-        use_sliceobj = python_version >= 0x300
+        use_slice_object = python_version >= 0x300
 
-        if use_sliceobj:
+        if use_slice_object:
             return StatementAssignmentSubscript(
                 subscribed=lookup_source,
                 source=source,
@@ -700,9 +700,9 @@ def buildDeleteStatementFromDecoded(provider, kind, detail, source_ref):
     elif kind == "Slice":
         lookup_source, lower, upper = detail
 
-        use_sliceobj = python_version >= 0x300
+        use_slice_object = python_version >= 0x300
 
-        if use_sliceobj:
+        if use_slice_object:
             return StatementDelSubscript(
                 subscribed=lookup_source,
                 subscript=makeExpressionBuiltinSlice(
@@ -994,10 +994,10 @@ def _buildInplaceAssignSliceNode(
 
         upper_ref1 = upper_ref2 = None
 
-    use_sliceobj = python_version >= 0x300
+    use_slice_object = python_version >= 0x300
 
     # Second assign the in-place result over the original value.
-    if use_sliceobj:
+    if use_slice_object:
         statements += (
             makeStatementAssignmentVariable(
                 variable=tmp_variable4,

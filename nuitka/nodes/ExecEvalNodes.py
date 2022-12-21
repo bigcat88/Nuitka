@@ -24,12 +24,10 @@ to do.
 
 from nuitka.PythonVersions import python_version
 
+from .Checkers import convertNoneConstantToNone
 from .ExpressionBases import ExpressionChildrenHavingBase
 from .NodeBases import StatementChildHavingBase, StatementChildrenHavingBase
-from .NodeMakingHelpers import (
-    convertNoneConstantToNone,
-    makeStatementOnlyNodesFromExpressions,
-)
+from .NodeMakingHelpers import makeStatementOnlyNodesFromExpressions
 
 
 class ExpressionBuiltinEval(ExpressionChildrenHavingBase):
