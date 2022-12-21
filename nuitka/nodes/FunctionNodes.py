@@ -581,11 +581,6 @@ class ExpressionFunctionBody(
     if python_version >= 0x340:
         __slots__ += ("qualname_setup",)
 
-    checkers = {
-        # TODO: Is "None" really an allowed value.
-        "body": checkStatementsSequenceOrNone
-    }
-
     def __init__(
         self,
         provider,
@@ -597,6 +592,8 @@ class ExpressionFunctionBody(
         auto_release,
         source_ref,
     ):
+        assert False, self.checkers
+
         ExpressionFunctionEntryPointBase.__init__(
             self,
             provider=provider,
