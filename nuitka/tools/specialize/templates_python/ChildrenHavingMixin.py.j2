@@ -290,12 +290,14 @@ class ChildrenHaving{{mixin_name}}Mixin(object):
 {% for named_child in named_children %}
         value = self.subnode_{{named_child}}
 
+{% if named_children_types.get(named_children[0]) == "tuple" %}
+        values["{{named_child}}"] = tuple(v.makeClone() for v in value)
+{% else %}
         if value is None:
             values["{{named_child}}"] = None
-        elif type(value) is tuple:
-            values["{{named_child}}"] = tuple(v.makeClone() for v in value)
         else:
             values["{{named_child}}"] = value.makeClone()
+{% endif %}
 {% endfor %}
 
         values.update(self.getDetails())

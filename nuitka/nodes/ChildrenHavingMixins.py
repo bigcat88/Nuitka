@@ -1,3 +1,20 @@
+#     Copyright 2022, Kay Hayen, mailto:kay.hayen@gmail.com
+#
+#     Part of "Nuitka", an optimizing Python compiler that is compatible and
+#     integrates with CPython, but also works on its own.
+#
+#     Licensed under the Apache License, Version 2.0 (the "License");
+#     you may not use this file except in compliance with the License.
+#     You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.
+#
 # pylint: disable=I0021,too-many-lines
 # pylint: disable=I0021,line-too-long
 
@@ -807,24 +824,18 @@ class ChildrenHavingExpressionLowerUpperMixin(object):
 
         if value is None:
             values["expression"] = None
-        elif type(value) is tuple:
-            values["expression"] = tuple(v.makeClone() for v in value)
         else:
             values["expression"] = value.makeClone()
         value = self.subnode_lower
 
         if value is None:
             values["lower"] = None
-        elif type(value) is tuple:
-            values["lower"] = tuple(v.makeClone() for v in value)
         else:
             values["lower"] = value.makeClone()
         value = self.subnode_upper
 
         if value is None:
             values["upper"] = None
-        elif type(value) is tuple:
-            values["upper"] = tuple(v.makeClone() for v in value)
         else:
             values["upper"] = value.makeClone()
 
@@ -1059,16 +1070,12 @@ class ChildrenHavingGroupNameMixin(object):
 
         if value is None:
             values["group"] = None
-        elif type(value) is tuple:
-            values["group"] = tuple(v.makeClone() for v in value)
         else:
             values["group"] = value.makeClone()
         value = self.subnode_name
 
         if value is None:
             values["name"] = None
-        elif type(value) is tuple:
-            values["name"] = tuple(v.makeClone() for v in value)
         else:
             values["name"] = value.makeClone()
 
